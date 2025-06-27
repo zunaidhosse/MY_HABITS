@@ -1,0 +1,21 @@
+{
+  "name": "HabitFlow",
+  "short_name": "HabitFlow",
+  "description": "A simple and beautiful app to track your habits and build a better life.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#4CAF50",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
+}

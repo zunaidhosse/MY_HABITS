@@ -1,0 +1,195 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HabitFlow</title>
+    <meta name="theme-color" content="#4CAF50"/>
+    <link rel="manifest" href="manifest.json">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.10/dayjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.10/plugin/isoWeek.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.10/plugin/customParseFormat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+    <script type="importmap">
+    {
+      "imports": {
+        "app": "./app.js",
+        "dom": "./dom.js",
+        "state": "./state.js",
+        "ui": "./ui.js",
+        "gamification": "./gamification.js",
+        "handlers": "./handlers.js"
+      }
+    }
+    </script>
+</head>
+<body>
+
+    <div id="app-container">
+
+        <!-- Onboarding Screen -->
+        <div id="onboarding-screen" class="screen active">
+            <img src="welcome_illustration.png" alt="A person tracking habits on a laptop" class="onboarding-image">
+            <div class="onboarding-content">
+                <h1>Habit Tracking</h1>
+                <p>Hi! Let's build healthy habits together.</p>
+                <button id="get-started-btn" class="cta-button">Get Started →</button>
+            </div>
+        </div>
+
+        <!-- Main App Content -->
+        <main id="main-app" class="hidden">
+            <!-- Screen 1: My Habits (Dashboard) -->
+            <div id="dashboard-screen" class="screen">
+                <header class="screen-header">
+                    <h1>MY HABITS</h1>
+                    <p id="current-date-dashboard"></p>
+                </header>
+                <div class="screen-content">
+                    <h2>Today</h2>
+                    <div id="today-habits-list" class="habit-list">
+                        <!-- Habits will be dynamically inserted here -->
+                    </div>
+                    <div class="add-habit-container">
+                        <input type="text" id="new-habit-input-dashboard" placeholder="Add a new habit...">
+                        <button id="add-habit-btn-dashboard">+</button>
+                    </div>
+
+                    <h2 class="section-title">Quick Add</h2>
+                    <div id="habit-templates-container">
+                        <!-- Habit templates will be dynamically inserted here -->
+                    </div>
+
+                    <h2 class="section-title">This week</h2>
+                    <div id="weekly-progress-list">
+                        <!-- Weekly progress bars will be dynamically inserted here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 2: Calendar -->
+            <div id="calendar-screen" class="screen">
+                <header class="screen-header">
+                    <h1>CALENDAR</h1>
+                </header>
+                <div class="screen-content">
+                    <div id="calendar-controls">
+                         <button id="cal-prev-day">‹</button>
+                         <div id="calendar-date-display"></div>
+                         <button id="cal-next-day">›</button>
+                    </div>
+                    <div id="calendar-habits-list" class="habit-list">
+                        <!-- Habits for the selected date will be here -->
+                    </div>
+                     <div class="add-habit-container">
+                        <input type="text" id="new-habit-input-calendar" placeholder="Add a new habit...">
+                        <button id="add-habit-btn-calendar">+</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 3: Progress -->
+            <div id="progress-screen" class="screen">
+                <header class="screen-header">
+                    <h1>PROGRESS</h1>
+                    <p>Statistics & Achievements</p>
+                </header>
+                 <div class="screen-content">
+                    <div id="gamification-stats">
+                        <div id="level-container">
+                            <div class="level-badge">LVL <span id="current-level">1</span></div>
+                            <div class="points-progress">
+                                <div class="points-info">
+                                    <span>Level Progress</span>
+                                    <span><span id="current-points">0</span> / <span id="points-next-level">100</span></span>
+                                </div>
+                                <div class="progress-bar-bg">
+                                    <div id="points-progress-bar" class="progress-bar-fill" style="width: 0%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h2 class="section-title">Achievements</h2>
+                    <div id="achievements-grid">
+                        <!-- Achievements will be dynamically inserted here -->
+                    </div>
+
+                    <h2 class="section-title">Weekly Completion</h2>
+                    <div class="chart-container">
+                        <canvas id="progress-chart"></canvas>
+                    </div>
+
+                    <h2 class="section-title">Habit Streaks</h2>
+                    <div id="habit-streaks">
+                        <!-- Habit streak stats will be here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 4: Settings (Placeholder) -->
+            <div id="settings-screen" class="screen">
+                <header class="screen-header">
+                    <h1>SETTINGS</h1>
+                </header>
+                <div class="screen-content">
+                     <h2 class="section-title">Appearance</h2>
+                     <div class="settings-option">
+                        <label for="theme-mode-selector">Theme</label>
+                        <div id="theme-mode-selector" class="toggle-switch">
+                            <button data-theme="light" class="active">Light</button>
+                            <button data-theme="dark">Dark</button>
+                        </div>
+                     </div>
+                     <div class="settings-option">
+                        <label>Accent Color</label>
+                        <div id="accent-color-selector" class="color-swatches">
+                            <button class="color-swatch" data-color="#4CAF50" style="background-color: #4CAF50;"></button>
+                            <button class="color-swatch" data-color="#3F51B5" style="background-color: #3F51B5;"></button>
+                            <button class="color-swatch" data-color="#E91E63" style="background-color: #E91E63;"></button>
+                            <button class="color-swatch" data-color="#FF9800" style="background-color: #FF9800;"></button>
+                             <button class="color-swatch" data-color="#00BCD4" style="background-color: #00BCD4;"></button>
+                        </div>
+                     </div>
+
+                     <h2 class="section-title">Data Management</h2>
+                     <button id="reset-data-btn">Reset All Data</button>
+
+                     <h2 class="section-title">Installation</h2>
+                     <div id="install-container" style="display: none;">
+                        <p>Install HabitFlow on your device for a better experience and offline access.</p>
+                        <button id="install-btn" class="cta-button" style="width: 100%; margin-top: 10px;">Add to Home Screen</button>
+                     </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Bottom Navigation Bar -->
+        <nav id="bottom-nav" class="hidden">
+            <button class="nav-btn active" data-screen="dashboard-screen">
+                <img src="home_icon.png" alt="My Habits">
+                <span>My Habits</span>
+            </button>
+            <button class="nav-btn" data-screen="calendar-screen">
+                <img src="calendar_icon.png" alt="Calendar">
+                <span>Calendar</span>
+            </button>
+            <button class="nav-btn" data-screen="progress-screen">
+                <img src="progress_icon.png" alt="Progress">
+                <span>Progress</span>
+            </button>
+            <button class="nav-btn" data-screen="settings-screen">
+                <img src="settings_icon.png" alt="Settings">
+                <span>Settings</span>
+            </button>
+        </nav>
+    </div>
+
+    <div id="toast-container"></div>
+
+    <script type="module" src="app.js"></script>
+</body>
+</html>
